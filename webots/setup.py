@@ -1,13 +1,11 @@
 from setuptools import find_packages, setup
 from glob import glob
 import os
-from Cython.Build import cythonize
 
 package_name = 'webots'
 files = package_name + "/*.py"
 
 setup(
-    ext_modules=cythonize(files,compiler_directives={'language_level' : "3"},force=True,quiet=True),
     name=package_name,
     version='0.0.0',
     packages=find_packages(exclude=['test']),

@@ -1,6 +1,5 @@
 from setuptools import find_packages, setup
 from glob import glob
-from Cython.Build import cythonize
 
 package_name = 'manipulators_control'
 submodules = 'manipulators_control/pymoveit2'

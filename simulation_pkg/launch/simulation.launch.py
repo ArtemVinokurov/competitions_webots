@@ -57,20 +57,6 @@ def get_ros2_nodes(*args):
         arguments=['arm1650_joint_state_broadcaster', '-c', 'controller_manager'] + controller_manager_timeout
     )
 
-    # gripper_controller_spawner_2 = Node(
-    #     package='controller_manager',
-    #     executable='spawner',
-    #     output='screen',
-    #     prefix=controller_manager_prefix,
-    #     arguments=['gripper_controller', '-c', 'angle/controller_manager'] + controller_manager_timeout
-    # )
-
-    angle_control_node = Node(
-        package='manipulators_control',
-        executable='angle_robot_control',
-        output='screen'
-    )
-
     if len(args) == 1:
         return [angle_joint_state_broadcaster_spawner,
                 angle_trajectory_controller_spawner,
@@ -236,12 +222,6 @@ def generate_launch_description():
         ros2_supervisor=True
     )
 
-    # gripper_control_node = Node(
-    #     package='black5dof_config',
-    #     executable='gripper_controller',
-    #     output='screen',
-    # )
-
     angle_control_node = Node(
         package='manipulators_control',
         executable='angle_robot_control',
@@ -262,7 +242,13 @@ def generate_launch_description():
         ],
         respawn=True
     )
+    lamp_description_path = os.path.join(get_package_share_directory('webots'), 'resource', 'urdf', 'lamp_robot.urdf')
 
+    lamp_driver = WebotsController(
+        robot_name='lamp',
+        parameters=[{'robot_description': lamp_description_path}],
+        respawn=True
+    )
 
     reset_handler = launch.actions.RegisterEventHandler(
         event_handler=event_handlers.OnProcessExit(
@@ -272,13 +258,20 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'world',
+            default_value='simulation_world.wbt',
+            description="5-dof arm world"
+        ),
         angle_driver,
         robot_state_publisher,
         joint_state_publisher_node,
+        webots,
+        webots._supervisor,
         db_arg,
         rviz_node,
         angle_control_node,
-
+        lamp_driver,
         reset_handler,
         launch.actions.RegisterEventHandler(
             event_handler=event_handlers.OnProcessExit(

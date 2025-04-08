@@ -9,6 +9,7 @@ from typing import List
 from manipulator_interfaces.srv import GoalPose, GripperCmd, JointPosition
 from geometry_msgs.msg import Pose
 from std_msgs.msg import Bool
+from std_srvs.srv import SetBool
 import time
 
 
@@ -16,14 +17,14 @@ import time
 class SimpleClient(Node):
     def __init__(self):
         super().__init__('angle_simple_client')
-        self.cli_joint = self.create_client(GoalPose, '/angle/MoveJ')
+        self.cli_joint = self.create_client(GoalPose, '/ARM165/MoveJ')
         # self.vacuum_gripper_pub = self.create_publisher(Bool, '/angle/suction_cup/turn_on', qos_profile=1)
-        self.gripper_cli = self.create_client(GripperCmd, 'angle/gripper_cmd')
+        self.vacuum_gripper_turn = self.create_client(SetBool, '/ARM165/vacuum_gripper/turn_on')
 
         while not self.cli_joint.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("service not available")
 
-        self.cli_linear = self.create_client(GoalPose, '/angle/MoveL')
+        self.cli_linear = self.create_client(GoalPose, '/ARM165/MoveL')
 
         while not self.cli_linear.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("service not available")
@@ -64,22 +65,12 @@ class SimpleClient(Node):
         return self.future.result()
     
     def gripper_turn(self, state):
-        req = GripperCmd.Request()
-
-        if state:
-
-            req.goal_pose = 0.9
-        else: 
-            req.goal_pose = 0.0
-
-        future = self.gripper_cli.call_async(req)
-
-        rclpy.spin_until_future_complete(self, future)
-
-        return future.result()
+        msg = SetBool.Request()
+        msg.data = state
+        self.vacuum_gripper_turn.call_async(msg)
 
     def pick(self, obj_pose : Pose):
-        z_offset = 0.1
+        z_offset = 0.0
         start_pose = copy.deepcopy(obj_pose)
         start_pose.position.z += z_offset
 
@@ -147,7 +138,7 @@ def main():
     rclpy.init()
     client = SimpleClient()
 
-    first_cube_pose = Pose_msg_create([0.269,-0.0961, 0.0127], [0.0, 1.0, 0.0, 0.0])
+    first_cube_pose = Pose_msg_create([1.26,-0.02, 0.13], [0.0, 1.0, 0.0, 0.0])
     second_cube_pose = Pose_msg_create([0.269, 0.01, 0.0127], [0.0, 1.0, 0.0, 0.0])
     third_cube_pose = Pose_msg_create([0.269, 0.114, 0.0127], [0.0, 1.0, 0.0, 0.0])
 
@@ -155,7 +146,7 @@ def main():
     # second_cube_target_pose = Pose_msg_create([0.0, 0.294, 0.05], [0.0, 0.0, 0.0, 1.0])
     # third_cube_target_pose = Pose_msg_create([0.0, 0.294, 0.075], [0.0, 0.0, 0.0, 1.0])
 
-    first_cube_target_pose = Pose_msg_create([0.0, 0.2379, 0.175], [0.707, -0.707, 0.0, 0.0])
+    first_cube_target_pose = Pose_msg_create([0.03, -1.11, 0.08], [0.0, 1.0, 0.0, 0.0])
     second_cube_target_pose = Pose_msg_create([0.0, 0.2379, 0.175], [0.707, -0.707, 0.0, 0.0])
     third_cube_target_pose = Pose_msg_create([0.0, 0.2379, 0.175], [0.707, -0.707, 0.0, 0.0])
 
@@ -166,8 +157,7 @@ def main():
     #     response = client.send_movel(pose1)
     #     response = client.send_movel(pose2)
 
-    for i in range(3):
-        client.grasp_and_move(obj_poses[i], target_poses[i])
+    client.grasp_and_move(obj_poses[0], target_poses[0])
 
         
     client.destroy_node()

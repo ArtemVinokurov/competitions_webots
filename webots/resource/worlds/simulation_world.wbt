@@ -12,14 +12,14 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/tables/protos/Table.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/ThreadMetalPlate.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/PlasticCrate.proto"
 EXTERNPROTO "../protos/Lamp.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/ReflectiveSurface.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.25468908975482074 -0.10858054100528802 -0.9609077654358196 4.021489521705915
-  position 4.70832144734552 -4.944244510745839 4.717896638443616
+  orientation -0.2824736628290412 0.06881942428880557 0.9568032800155436 2.69686853799828
+  position 8.834171835408263 -4.20796162221559 6.691569432294893
 }
 TexturedBackground {
   texture "empty_office"
@@ -30,10 +30,6 @@ Floor {
   size 8 8
   appearance FormedConcrete {
   }
-}
-PlasticCrate {
-  translation 1.33 0 0.76
-  size 0.6 0.6 0.15
 }
 Table {
   translation 1.34 0 0
@@ -54,6 +50,7 @@ Robot {
 }
 ConveyorBelt {
   translation 0 -1.12 0
+  speed 0
 }
 DEF WALL Solid {
   translation -0.01 4.00148 1.48682
@@ -91,17 +88,19 @@ DEF WALL Solid {
   ]
   name "solid(2)"
 }
+SolidBox {
+  translation 1.26 -0.02 0.78
+  name "cube"
+  size 0.05 0.05 0.05
+  appearance ReflectiveSurface {
+  }
+  physics Physics {
+  }
+}
 ARM165 {
   translation 0 0 0.7
   controller "<extern>"
   toolSlot [
-    Camera {
-      translation 0.13 0 0
-      rotation 1 0 0 -1.5708003061004252
-      fieldOfView 1
-      width 640
-      height 480
-    }
     RobotiqEPickGripper {
       rotation 1 0 0 1.5707996938995747
     }
@@ -115,5 +114,48 @@ SolidBox {
 }
 Lamp {
   translation 1.77 0.41 0.74
-  controller "<none>"
+}
+Solid {
+  translation 1.26 -0.02 0.75
+  children [
+    CadShape {
+      url [
+        "../assets/box.dae"
+      ]
+    }
+  ]
+  name "box"
+}
+Solid {
+  translation 0.53 -1.11 0.61
+  children [
+    CadShape {
+      url [
+        "../assets/box.dae"
+      ]
+    }
+  ]
+  name "box(1)"
+}
+Solid {
+  translation 0.03 -1.11 0.61
+  children [
+    CadShape {
+      url [
+        "../assets/box.dae"
+      ]
+    }
+  ]
+  name "box(2)"
+}
+Solid {
+  translation -0.47 -1.11 0.61
+  children [
+    CadShape {
+      url [
+        "../assets/box.dae"
+      ]
+    }
+  ]
+  name "box(3)"
 }

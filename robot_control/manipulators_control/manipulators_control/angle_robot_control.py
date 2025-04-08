@@ -51,13 +51,13 @@ class RobotControl(Node):
             follow_joint_trajectory_action_name='/arm1650_controller/follow_joint_trajectory'
         )        
 
-        self.moveJ_srv = self.create_service(GoalPose, '/angle/MoveJ', self.moveJ_callback, callback_group=callback_group)
-        self.moveL_srv = self.create_service(GoalPose, '/angle/MoveL', self.moveL_callback, callback_group=callback_group)
-        self.moveJoint_srv = self.create_service(JointPosition, '/angle/MoveJoint', self.moveJoint_callback, callback_group=callback_group)
-        self.moveJ_cyl_srv = self.create_service(GripperDownPose, '/angle/MoveJCyl', self.moveJCyl_callback, callback_group=callback_group)
-        self.moveL_cyl_srv = self.create_service(GripperDownPose, '/angle/MoveLCyl', self.moveLCyl_callback, callback_group=callback_group)
+        self.moveJ_srv = self.create_service(GoalPose, '/ARM165/MoveJ', self.moveJ_callback, callback_group=callback_group)
+        self.moveL_srv = self.create_service(GoalPose, '/ARM165/MoveL', self.moveL_callback, callback_group=callback_group)
+        self.moveJoint_srv = self.create_service(JointPosition, '/ARM165/MoveJoint', self.moveJoint_callback, callback_group=callback_group)
+        self.moveJ_cyl_srv = self.create_service(GripperDownPose, '/ARM165/MoveJCyl', self.moveJCyl_callback, callback_group=callback_group)
+        self.moveL_cyl_srv = self.create_service(GripperDownPose, '/ARM165/MoveLCyl', self.moveLCyl_callback, callback_group=callback_group)
         
-        self.allow_sub_1 = self.create_subscription(Bool, '/angle/AllowExecution', self.allow_execution_callback, 10, callback_group=callback_group)
+        self.allow_sub_1 = self.create_subscription(Bool, '/ARM165/AllowExecution', self.allow_execution_callback, 10, callback_group=callback_group)
         self.allow_sub_2 = self.create_subscription(Bool, '/AllowExecution', self.allow_execution_callback_general, 10, callback_group=callback_group)
 
         self.vacuum_gripper_srv = self.create_service(SetBool, '/ARM165/vacuum_gripper/turn_on', self.vacuum_gripper_callback, callback_group=callback_group)

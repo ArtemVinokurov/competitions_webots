@@ -1,5 +1,4 @@
 from setuptools import find_packages, setup
-from Cython.Build import cythonize
 
 package_name = 'lamp_package'
 files = package_name + "/*.py"
@@ -12,7 +11,6 @@ data_files.append(('share/' + package_name + '/resource', ['resource/lamp_robot.
 data_files.append(('share/' + package_name, ['package.xml']))
 
 setup(
-    ext_modules=cythonize(files,compiler_directives={'language_level' : "3"},force=True,quiet=True),
     name=package_name,
     version='0.0.0',
     packages=find_packages(exclude=['test']),

@@ -1,3 +1,9 @@
+# Установка ROS2
+
+Инструкции по установке фреймворка ROS2 Humble можно найти по [cсылке](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html). Для установки рекомендуется десктопная версия ROS2 (ros-humble-desktop).
+
+
+
 # Инструкции по установке симулятора Webots
 
 Для установки симулятора Webots выполните в терминале следующие команды:
@@ -16,7 +22,7 @@ echo 'export WEBOTS_HOME=/usr/local/webots' >> ~/.bashrc
 
 ```
 
-# Установка симулятора
+# Установка
 
 Установите инструменты git, используя команду:
 

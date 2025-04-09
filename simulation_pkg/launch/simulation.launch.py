@@ -250,6 +250,23 @@ def generate_launch_description():
         respawn=True
     )
 
+    camera_description_path = os.path.join(get_package_share_directory('webots'), 'resource', 'urdf', 'camera.urdf')
+    table_camera_driver = WebotsController(
+        robot_name='Table camera',
+        parameters=[{'robot_description': camera_description_path},
+                    {'use_sim_time': True}],
+        respawn=True
+    )
+
+    conv_camera_driver = WebotsController(
+        robot_name='Conveyor camera',
+        parameters=[{'robot_description': camera_description_path},
+                    {'use_sim_time': True}],
+        respawn=True
+    )
+
+
+
     reset_handler = launch.actions.RegisterEventHandler(
         event_handler=event_handlers.OnProcessExit(
             target_action=webots._supervisor,
@@ -272,6 +289,8 @@ def generate_launch_description():
         rviz_node,
         angle_control_node,
         lamp_driver,
+        table_camera_driver,
+        conv_camera_driver,
         reset_handler,
         launch.actions.RegisterEventHandler(
             event_handler=event_handlers.OnProcessExit(

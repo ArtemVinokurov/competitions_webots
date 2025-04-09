@@ -19,7 +19,6 @@ sudo apt install webots
 После окончания установки добавьте в bashrc команду для экспорта переменной окружения:
 ```
 echo 'export WEBOTS_HOME=/usr/local/webots' >> ~/.bashrc
-
 ```
 
 # Установка

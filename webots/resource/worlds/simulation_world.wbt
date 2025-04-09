@@ -1,4 +1,4 @@
-#VRML_SIM R2023b utf8
+#VRML_SIM R2025a utf8
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
@@ -18,8 +18,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.2824736628290412 0.06881942428880557 0.9568032800155436 2.69686853799828
-  position 8.834171835408263 -4.20796162221559 6.691569432294893
+  orientation -0.22427871666533564 0.07700670208396951 0.9714777532630897 2.514428704056861
+  position 8.615119961852958 -5.7014658287809095 5.935823389154019
 }
 TexturedBackground {
   texture "empty_office"
@@ -158,4 +158,31 @@ Solid {
     }
   ]
   name "box(3)"
+}
+Robot {
+  children [
+    Camera {
+      translation 1.3 0.02 1.72
+      rotation 0 1 0 1.5708
+      fieldOfView 1
+      width 640
+      height 480
+    }
+  ]
+  name "Table camera"
+  controller "<extern>"
+  supervisor TRUE
+}
+Robot {
+  translation 0.14 -1.15 1.59
+  children [
+    Camera {
+      rotation 0 1 0 1.5708
+      fieldOfView 1
+      width 640
+      height 480
+    }
+  ]
+  name "Conveyor camera"
+  controller "<extern>"
 }
